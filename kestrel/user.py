@@ -8,6 +8,7 @@
 
 import os
 import logging
+#logging.basicConfig()
 import sleekxmpp
 try:
     from ConfigParser import ConfigParser
@@ -16,6 +17,7 @@ except:
 
 
 log = logging.getLogger(__name__)
+#log.setLevel(logging.DEBUG)
 
 
 def read_job(file):

@@ -8,6 +8,7 @@
 
 import redis
 import logging
+#logging.basicConfig()
 import pickle
 import types
 
@@ -17,7 +18,7 @@ from sleekxmpp.plugins.base import base_plugin
 
 
 log = logging.getLogger(__name__)
-
+#log.setLevel(logging.DEBUG)
 
 class redis_adhoc(base_plugin):
 

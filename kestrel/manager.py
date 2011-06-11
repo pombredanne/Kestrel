@@ -7,18 +7,40 @@
 """
 
 import logging
+#logging.basicConfig()
+
+#
+
+
 import random
 
 import sleekxmpp
 from sleekxmpp.xmlstream import JID
 
+log = logging.getLogger(__name__)
 
 class Manager(sleekxmpp.ComponentXMPP):
 
     def __init__(self, jid, password, host, port, config):
+#        log = logging.getLogger(__name__)
+        print ("get logger")
+#        log.setLevel(logging.DEBUG)
+#        print "init manager2"
+        log.debug("in manager class2 ")
+        log.debug("now setup the component ")
+        logging.log(logging.DEBUG, "logging for debugging should work now.2")
+        print (jid, password, host, port)
+        log.debug("now setup the component ")
         sleekxmpp.ComponentXMPP.__init__(self, jid, password, host, port)
 
         self.config = config
+
+        print ("config",self.config)
+        print ("pool",self.config['pool'])
+        print ("jobs",self.config['jobs'])
+        print ("redis host",self.config['redis']['host'])
+        print ("redis port",self.config['redis']['port'])
+        print ("redis db",self.config['redis']['database'])
 
         self.redis_config = {
                 'host': self.config['redis']['host'],
@@ -44,6 +66,8 @@ class Manager(sleekxmpp.ComponentXMPP):
         self.register_plugin('redis_roster',
                              self.redis_config,
                              module='kestrel.plugins.redis_roster')
+
+
         self.register_plugin(
                 'kestrel_manager',
                 {'pool_jid': JID(self.config['pool']),
@@ -57,8 +81,10 @@ class Manager(sleekxmpp.ComponentXMPP):
                                       itype='generic',
                                       name='Kestrel',
                                       lang='en')
+        print ("init finished, now waiting ")
 
     def start(self, event):
+        print ("starting manager")
         for comp_jid in self.roster:
             for jid in self.roster[comp_jid]:
                 self.send_presence(pfrom=comp_jid, pto=jid)

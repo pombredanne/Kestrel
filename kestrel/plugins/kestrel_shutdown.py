@@ -1,4 +1,5 @@
 import logging
+#logging.basicConfig()
 import os
 import signal
 import subprocess
@@ -12,7 +13,7 @@ from sleekxmpp.plugins.base import base_plugin
 
 
 log = logging.getLogger(__name__)
-
+#log.setLevel(logging.DEBUG)
 
 class kestrel_shutdown(base_plugin):
 

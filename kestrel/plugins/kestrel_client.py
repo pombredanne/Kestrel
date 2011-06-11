@@ -8,6 +8,7 @@
 
 
 import logging
+#logging.basicConfig()
 try:
     import queue
 except:
@@ -18,7 +19,7 @@ from sleekxmpp.plugins.base import base_plugin
 
 
 log = logging.getLogger(__name__)
-
+#log.setLevel(logging.DEBUG)
 
 class kestrel_client(base_plugin):
 

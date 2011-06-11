@@ -8,13 +8,13 @@
 
 import redis
 import logging
-
+#logging.basicConfig()
 import sleekxmpp
 from sleekxmpp.plugins.base import base_plugin
 
 
 log = logging.getLogger(__name__)
-
+#log.setLevel(logging.DEBUG)
 
 class redis_roster(base_plugin):
 

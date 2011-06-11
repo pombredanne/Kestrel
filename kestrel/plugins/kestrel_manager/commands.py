@@ -22,24 +22,29 @@ class AdhocCommand(base_plugin):
     name = 'Adhoc Command'
 
     def plugin_init(self):
+        print ("plugin init")
         self.description = 'Command: %s' % self.name
         self.jid = self.config.get('jid', self.xmpp.boundjid)
         self.command_init()
 
     def post_init(self):
+        print ("plugin post init")
         self.xmpp['xep_0050'].add_command(self.jid.full,
                                           self.node,
                                           self.name,
                                           self.session_start)
 
     def command_init(self):
+        print ("command init")
         pass
 
     def session_start(self, payload, session):
+        print ("session start")
         session['hash_prefix'] = self.node
         return self.start(payload, session)
 
     def start(self, payload, session):
+        print ("start")
         return session
 
 
@@ -49,6 +54,7 @@ class cmd_poolstatus(AdhocCommand):
     name = 'Pool Status'
 
     def command_init(self):
+        print ("pool status command init")
         self.kestrel = self.config['backend']
 
     def start(self, form, session):

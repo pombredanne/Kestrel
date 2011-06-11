@@ -26,6 +26,7 @@ log = logging.getLogger(__name__)
 class kestrel_manager(base.base_plugin):
 
     def plugin_init(self):
+        log.debug("Plugin init")
         self.description = "Kestrel Manager"
 
         backend = self.xmpp['redis_queue']
@@ -104,7 +105,11 @@ class kestrel_manager(base.base_plugin):
             (job_jid, 'running', ['get_info'])]
 
         self.xmpp['xep_0030'].add_feature('kestrel:manager')
+        log.debug("Adding Manager component")
         for item in items:
+            log.debug("Adding Item component")
+            #% item[0], item[1], item[2] , item[3], item[4])
+            log.debug(item)
             self.xmpp['xep_0030'].add_item(
                     jid=item[0],
                     subnode=item[1],
@@ -152,10 +157,12 @@ class kestrel_manager(base.base_plugin):
                                             block=False)
 
     def _handle_online(self, presence):
+        log.debug("handle_online")
         self.xmpp.send_presence(pto=presence['from'],
                                 pfrom=presence['to'])
 
     def _handle_changed_status(self, presence):
+        log.debug("handle_changed_status")
         jid = presence['from'].jid
         if presence['to'].full != self.pool_jid.full:
             return
@@ -169,14 +176,17 @@ class kestrel_manager(base.base_plugin):
             self.xmpp.event('kestrel_worker_available', jid)
 
     def _handle_subscribed(self, presence):
+        log.debug("handle_subscribed")
         self.xmpp.send_presence(pto=presence['from'],
                                 pfrom=self.pool_jid,
                                 ptype='probe')
 
     def _handle_ping_error(self, iq):
+        log.debug("handle_ping error")
         self.kestrel.worker_offline(iq['from'].full)
 
     def _disco_info(self, jid, node, data):
+        log.debug("disco info")
         info = self.xmpp['xep_0030'].stanza.DiscoInfo()
         info.add_feature('http://jabber.org/protocol/disco#info')
         if not node:
@@ -184,6 +194,7 @@ class kestrel_manager(base.base_plugin):
         return info
 
     def _disco_job(self, jid, node, data):
+        log.debug("disco job")
         items = self.xmpp['xep_0030'].stanza.DiscoItems()
         if not node:
             items.add_item(jid=self.job_jid.full,
@@ -195,6 +206,7 @@ class kestrel_manager(base.base_plugin):
         return items
 
     def _disco_queued_jobs(self, jid, node, data):
+        log.debug("disco queued job")
         items = self.xmpp['xep_0030'].stanza.DiscoItems()
         jobs = self.kestrel.get_jobs()
         for job in jobs:
@@ -205,10 +217,12 @@ class kestrel_manager(base.base_plugin):
         return items
 
     def _disco_running_jobs(self, jid, node, data):
+        log.debug("disco running jobs")
         items = self.xmpp['xep_0030'].stanza.DiscoItems()
         return items
 
     def _disco_online_workers(self, jid, node, data):
+        log.debug("disco online workers")
         items = self.xmpp['xep_0030'].stanza.DiscoItems()
         workers = self.kestrel.online_workers()
         for worker in workers:
@@ -216,6 +230,7 @@ class kestrel_manager(base.base_plugin):
         return items
 
     def _disco_available_workers(self, jid, node, data):
+        log.debug("disco availabe workers")
         items = self.xmpp['xep_0030'].stanza.DiscoItems()
         workers = self.kestrel.available_workers()
         for worker in workers:
@@ -223,6 +238,7 @@ class kestrel_manager(base.base_plugin):
         return items
 
     def _disco_busy_workers(self, jid, node, data):
+        log.debug("disco workers busy")
         items = self.xmpp['xep_0030'].stanza.DiscoItems()
         workers = self.kestrel.busy_workers()
         for worker in workers:
@@ -230,6 +246,7 @@ class kestrel_manager(base.base_plugin):
         return items
 
     def _handle_submit_job(self, job):
+        log.debug("handle submit job")
         job, matches = self.kestrel.submit_job(
                 job['id'],
                 job['owner'],

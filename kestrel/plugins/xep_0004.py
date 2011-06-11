@@ -7,6 +7,7 @@
 """
 
 import logging
+#logging.basicConfig()
 import copy
 
 import sleekxmpp
@@ -19,7 +20,7 @@ from sleekxmpp.thirdparty import OrderedDict
 
 
 log = logging.getLogger(__name__)
-
+#log.setLevel(logging.DEBUG)
 
 class Form(ElementBase):
 
