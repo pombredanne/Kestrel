@@ -51,18 +51,24 @@ class kestrel_client(base_plugin):
             'next': self._submit_next,
             'error': self._submit_error
         }
+        log.debug("start command")
         self.xmpp['xep_0050'].start_command(self.submit_jid,
                                             'submit',
                                             session)
-
+        log.debug("get queue")
         try:
             result = self.submit_queue.get(block=True,
-                                           timeout=self.timeout)
+                                           timeout=self.timeout
+                                           )
         except:
+            log.debug("could not get queue")
             result = False
         return result
+#        return 1
+
 
     def _submit_next(self, iq, session):
+        log.debug("Submit_next job to %s" % (iq))
         job = session['job']
         reqs = session['requirements']
         form = self.xmpp['xep_0004'].makeForm(ftype='submit')
@@ -78,6 +84,7 @@ class kestrel_client(base_plugin):
         self.xmpp['xep_0050'].continue_command(session)
 
     def _submit_complete(self, iq, session):
+        log.debug("Submit_complete job to %s" % (iq))
         form = iq['command']['form']
         job_id = form['values'].get('job_id', False)
         self.submit_queue.put(job_id)
