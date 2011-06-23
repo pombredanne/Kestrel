@@ -1,0 +1,4 @@
+[job]
+queue=1
+command=./run_rendering.sh
+cleanup=./cleanup_rendering.sh
