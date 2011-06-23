@@ -2,4 +2,5 @@
 queue=50
 command=./run_rendering.sh
 cleanup=./cleanup_rendering.sh
-requires=PYTHON FOO
+requires=PYTHON
+require=PYTHON

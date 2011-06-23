@@ -8,7 +8,6 @@
 
 
 import logging
-#logging.basicConfig()
 import os
 import signal
 import subprocess
@@ -22,7 +21,7 @@ from sleekxmpp.plugins.base import base_plugin
 
 
 log = logging.getLogger(__name__)
-#log.setLevel(logging.DEBUG)
+
 
 class kestrel_executor(base_plugin):
 
@@ -106,10 +105,11 @@ class kestrel_executor(base_plugin):
     def _execute(self, name, command, cleanup=False):
         """Wrapper function to open a subprocess."""
         try:
-            task_process = subprocess.Popen(['sh', '-c', "%s" % command],
-                                            shell=False,
+            task_process = subprocess.Popen(["%s" % command],
+#                                            shell=False,
+                                            shell=True,
                                             stdout=subprocess.PIPE,
-                                            stderr=subprocess.PIPE,
+                                           # stderr=subprocess.PIPE,
                                             preexec_fn=os.setsid)
             if not cleanup:
                 with self.lock:
